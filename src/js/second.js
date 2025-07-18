@@ -1,4 +1,4 @@
 export default function sayHello(){
-    console.log("Hello from enother place")
+  console.log("Hello from enother place");
 }
 
