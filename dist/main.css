@@ -1,0 +1,17 @@
+/*!***********************************************************************************************************!*\
+  !*** css ../node_modules/css-loader/dist/cjs.js!../node_modules/sass-loader/dist/cjs.js!./scss/main.scss ***!
+  \***********************************************************************************************************/
+@font-face {
+  font-family: "Roboto";
+  src: url(fc2b5060f7accec5cf74.ttf) format("truetype");
+}
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+.title {
+  font-size: 50px;
+  text-align: center;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibWFpbi5jc3MiLCJtYXBwaW5ncyI6Ijs7O0FBQUE7RUFDSTtFQUNBO0FBQ0o7QUFFQTtFQUNJO0FBQUo7O0FBR0E7RUFDSTtFQUNBO0FBQUosQyIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL3Njc3MvbWFpbi5zY3NzIl0sInNvdXJjZXNDb250ZW50IjpbIkBmb250LWZhY2Uge1xyXG4gICAgZm9udC1mYW1pbHk6ICdSb2JvdG8nO1xyXG4gICAgc3JjOiB1cmwoJy4uL2ZvbnRzL1JvYm90by1SZWd1bGFyLnR0ZicpIGZvcm1hdCgndHJ1ZXR5cGUnKTtcclxufVxyXG5cclxuYm9keXtcclxuICAgIGZvbnQtZmFtaWx5OiBcIlJvYm90b1wiLCBzYW5zLXNlcmlmO1xyXG59XHJcblxyXG4udGl0bGV7XHJcbiAgICBmb250LXNpemU6IDUwcHg7XHJcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbn1cclxuXHJcbiJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==*/
