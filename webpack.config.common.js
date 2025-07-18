@@ -1,6 +1,8 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const CopyPlugin = require("copy-webpack-plugin")
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
     context: path.resolve(__dirname, 'src'),
@@ -15,6 +17,15 @@ module.exports = {
             template: path.resolve(__dirname, 'public/index.html')
         }),
         new MiniCssExtractPlugin(),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, 'public/assets'),
+                    to: path.resolve(__dirname, 'dist/assets')
+                }
+            ]
+        }),
+        new ESLintPlugin(),
     ],
     module: {
         rules: [

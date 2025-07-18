@@ -1,6 +1,6 @@
-import sayHello from "./second"
-import "../scss/main.scss"
+import sayHello from "./second";
+import "../scss/main.scss";
 
-console.log("HELLO")
+console.log("HELLO");
 
-sayHello()
+sayHello();
