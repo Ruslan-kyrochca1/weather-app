@@ -3,12 +3,101 @@
     src: url('../fonts/Roboto-Regular.ttf') format('truetype');
 }
 
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 body{
     font-family: "Roboto", sans-serif;
+    height: 100vh;
 }
 
 .title{
+    padding-top: 30px;
     font-size: 50px;
     text-align: center;
+    color: orange;
 }
 
+.weather-container{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.audio-container{
+    margin: 0px 15px;
+}
+
+.img-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    cursor: pointer;
+    .weather-img{
+        width: 50px;
+        height: 50px;
+        transition: all 0.3s ease;
+    }
+
+    .audio-playing .weather-img {
+        mask-image: url('../../public/assets/icons/pause.svg');
+        -webkit-mask-image: url('../../public/assets/icons/pause.svg');
+    }
+}
+
+.sun{
+    background: no-repeat center/cover url("../../public/assets/summer-bg.jpg");
+}
+
+.rain{
+    background: no-repeat center/cover url("../../public/assets/rainy-bg.jpg");
+}
+
+.snow{
+    background: no-repeat center/cover url("../../public/assets/winter-bg.jpg");
+}
+
+.custom-audio-player {
+    width: 80%;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+#audio-element {
+    display: none;
+}
+
+.progress-container {
+    position: relative;
+    height: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    position: absolute;
+    height: 100%;
+    width: 0;
+    background: #4285f4;
+    border-radius: 2px;
+}
+
+.progress-handle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #4285f4;
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    left: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
