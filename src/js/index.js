@@ -1,70 +1,66 @@
-import "../scss/main.scss";
-import sun from "../../public/assets/summer-bg.jpg";
-import rain from "../../public/assets/rainy-bg.jpg";
-import snow from "../../public/assets/winter-bg.jpg";
-
-document.querySelectorAll('.audio-container').forEach(container => {
-    const player = container.querySelector('.img-container');
-    const audio = container.querySelector('audio');
-    const progressBar = container.querySelector('.progress-bar');
-    const progressHandle = container.querySelector('.progress-handle');
-    const progressContainer = container.querySelector('.progress-container');
-    
-    player.addEventListener('click', () => {
-        
-        if (audio.paused) {
-            document.querySelectorAll('audio').forEach(a => {
-                const images = document.querySelectorAll('.weather-img');
-                [...images].map((img)=>{
-                    img.src = img.dataset.playIcon;
-                });
-                a.pause();
-            });
-            audio.play();
-            if(audio.className.includes("sun")){
-                const img = document.querySelector(".sun-img");
-                document.body.style.background = `url(${sun})`;
-                document.body.style.backdropFilter = `blur(8px)`;
-                img.src = img.dataset.pauseIcon;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+require("../scss/main.scss");
+const sun_svg_1 = __importDefault(require("../../public/assets/icons/sun.svg"));
+const cloud_rain_svg_1 = __importDefault(require("../../public/assets/icons/cloud-rain.svg"));
+const cloud_snow_svg_1 = __importDefault(require("../../public/assets/icons/cloud-snow.svg"));
+const pause_svg_1 = __importDefault(require("../../public/assets/icons/pause.svg"));
+const summer_mp3_1 = __importDefault(require("../../public/assets/sounds/summer.mp3"));
+const rain_mp3_1 = __importDefault(require("../..//public/assets/sounds/rain.mp3"));
+const winter_mp3_1 = __importDefault(require("../..//public/assets/sounds/winter.mp3"));
+const sounds = [
+    { name: "sun", audio: summer_mp3_1.default, bg: "summer-bg.jpg", icon: sun_svg_1.default },
+    { name: "rain", audio: rain_mp3_1.default, bg: "rainy-bg.jpg", icon: cloud_rain_svg_1.default },
+    { name: "snow", audio: winter_mp3_1.default, bg: "winter-bg.jpg", icon: cloud_snow_svg_1.default }
+];
+const container = document.querySelector('.weather-container');
+const audioArr = [];
+const createButtons = () => {
+    sounds.forEach(sound => {
+        const audioContainer = document.createElement('div');
+        audioContainer.className = 'audio-container';
+        const button = document.createElement('button');
+        button.className = `player-button ${sound.name}`;
+        const iconContainer = document.createElement('div');
+        iconContainer.className = 'icon-container';
+        button.appendChild(iconContainer);
+        const icon = document.createElement('img');
+        icon.src = sound.icon;
+        icon.alt = sound.name;
+        iconContainer.appendChild(icon);
+        const audioPlayer = document.createElement('div');
+        audioPlayer.className = 'custom-audio-player';
+        const audio = document.createElement('audio');
+        audio.className = 'audio-element';
+        audio.src = sound.audio;
+        audioArr.push(audio);
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'progress-container';
+        const progressBar = document.createElement('div');
+        progressBar.className = 'progress-bar';
+        const progressHandle = document.createElement('div');
+        progressHandle.className = 'progress-handle';
+        progressContainer.appendChild(progressBar);
+        progressContainer.appendChild(progressHandle);
+        audioPlayer.appendChild(audio);
+        audioPlayer.appendChild(progressContainer);
+        audioContainer.appendChild(button);
+        audioContainer.appendChild(audioPlayer);
+        container.appendChild(audioContainer);
+        iconContainer.addEventListener('click', () => {
+            if (audio.paused) {
+                audioArr.map(audioElem => audioElem.pause());
+                audio.play();
+                icon.src = pause_svg_1.default;
             }
-            else if(audio.className.includes("rain")){
-                const img = document.querySelector(".rain-img");
-                document.body.style.background = `url(${rain})`;
-                img.src = img.dataset.pauseIcon;
+            else {
+                audio.pause();
+                // icon.src = sounds
             }
-            else if(audio.className.includes("snow")){
-                const img = document.querySelector(".snow-img");
-                document.body.style.background = `url(${snow})`;
-                img.src = img.dataset.pauseIcon;
-            }
-            
-        } else {
-            audio.pause();
-            if(audio.className.includes("sun")){
-                const img = document.querySelector(".sun-img");
-                img.src = img.dataset.playIcon;
-            }
-            if(audio.className.includes("rain")){
-                const img = document.querySelector(".rain-img");
-                img.src = img.dataset.playIcon;
-            }
-            if(audio.className.includes("snow")){
-                const img = document.querySelector(".snow-img");
-                img.src = img.dataset.playIcon;
-            }
-        }
+        });
     });
-    
-    audio.addEventListener('timeupdate', () => {
-        const progressPercent = (audio.currentTime / audio.duration) * 100;
-        progressBar.style.width = `${progressPercent}%`;
-        progressHandle.style.left = `${progressPercent}%`;
-    });
-    
-    progressContainer.addEventListener('click', (e) => {
-        const clickX = e.clientX - progressContainer.getBoundingClientRect().left;
-        const containerWidth = progressContainer.clientWidth;
-        const seekTime = (clickX / containerWidth) * audio.duration;
-        audio.currentTime = seekTime;
-    });
-});
+};
+createButtons();
