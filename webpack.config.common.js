@@ -42,12 +42,19 @@ module.exports = {
                 type: 'asset/resource',
             },
             {
-                test: /\.(png|jpg|gif)$/i,
+                test: /\.(png|jpg|gif|svg)$/i,
                 type: 'asset/resource',
                 generator: {
-                    filename: 'images/[hash][ext][query]' // Изображения в images/
+                    filename: 'images/[hash][ext][query]'
                 }
             },
+            {
+                test: /\.(mp3|wav)$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/sounds/[hash][ext][query]'
+                }
+            }
         ],
     },
 };

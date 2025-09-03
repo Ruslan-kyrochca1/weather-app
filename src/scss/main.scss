@@ -14,6 +14,16 @@ body{
     height: 100vh;
 }
 
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background-position: center;
+}
+
 .title{
     padding-top: 30px;
     font-size: 50px;
@@ -27,18 +37,21 @@ body{
     justify-content: center;
 }
 
+.player-button{
+    border: none;
+    border-radius: 15px;
+}
+
 .audio-container{
     margin: 0px 15px;
 }
 
-.img-container{
+.icon-container{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 200px;
     height: 200px;
-    border: 1px solid #fff;
-    border-radius: 15px;
     cursor: pointer;
     .weather-img{
         width: 50px;
@@ -51,6 +64,7 @@ body{
         -webkit-mask-image: url('../../public/assets/icons/pause.svg');
     }
 }
+
 
 .sun{
     background: no-repeat center/cover url("../../public/assets/summer-bg.jpg");
@@ -74,30 +88,33 @@ body{
     display: none;
 }
 
-.progress-container {
-    position: relative;
-    height: 4px;
-    background: #e0e0e0;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.progress-bar {
+.volume-control {
+  position: relative;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  margin-top: 10px;
+  width: 100%;
+  
+  .volume-bar {
     position: absolute;
     height: 100%;
-    width: 0;
+    width: 50%;
     background: #4285f4;
-    border-radius: 2px;
-}
-
-.progress-handle {
+    border-radius: 4px;
+  }
+  
+  .volume-handle {
     position: absolute;
-    width: 12px;
-    height: 12px;
-    background: #4285f4;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border: 2px solid #4285f4;
     border-radius: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    z-index: 1;
+  }
 }
