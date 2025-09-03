@@ -4,25 +4,39 @@ import rain from "../../public/assets/icons/cloud-rain.svg";
 import snow from "../../public/assets/icons/cloud-snow.svg";
 import pause from "../../public/assets/icons/pause.svg";
 
+import sunBg from "../../public/assets/summer-bg.jpg";
+import rainBg from "../../public/assets/rainy-bg.jpg";
+import snowBg from "../../public/assets/winter-bg.jpg";
+
 import summerAudio from "../../public/assets/sounds/summer.mp3";
 import rainAudio from "../..//public/assets/sounds/rain.mp3";
 import winterAudio from "../..//public/assets/sounds/winter.mp3";
 
-interface soundType {
-    name: string,
-    audio: string,
-    bg: string,
-    icon: string
-}
-
 const sounds: soundType[] = [
-    {name: "sun", audio: summerAudio, bg: "summer-bg.jpg", icon: sun},
-    {name: "rain", audio: rainAudio, bg: "rainy-bg.jpg", icon: rain},
-    {name: "snow", audio: winterAudio, bg: "winter-bg.jpg", icon: snow}
+    {name: "sun", audio: summerAudio, bg: sunBg, icon: sun},
+    {name: "rain", audio: rainAudio, bg: rainBg, icon: rain},
+    {name: "snow", audio: winterAudio, bg: snowBg, icon: snow}
 ]
 
 const container = document.querySelector('.weather-container')!;
-const audioArr: HTMLAudioElement[]= [];
+const audioArr: HTMLAudioElement[] = [];
+let correct: audioType = {
+    audio: null,
+    icon: {
+        element: null,
+        src: null
+    },
+};
+
+//Задний фон
+const background = document.createElement('div');
+background.className = 'background',
+document.body.appendChild(background);
+
+//Громкость
+let currentVolume = 0.5; 
+
+
 
 const createButtons = () => {
     sounds.forEach(sound => {
@@ -38,6 +52,7 @@ const createButtons = () => {
         button.appendChild(iconContainer);
 
         const icon = document.createElement('img');
+        icon.className = 'icon',
         icon.src = sound.icon;
         icon.alt = sound.name;
         iconContainer.appendChild(icon);
@@ -50,21 +65,20 @@ const createButtons = () => {
         audio.src = sound.audio;
         audioArr.push(audio);
 
-        const progressContainer = document.createElement('div');
-        progressContainer.className = 'progress-container';
+        const volumeControl = document.createElement('div');
+        volumeControl.className = 'volume-control';
 
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
+        const volumeBar = document.createElement('div');
+        volumeBar.className = 'volume-bar';
 
-        const progressHandle = document.createElement('div');
-        progressHandle.className = 'progress-handle'
+        const volumeHandle = document.createElement('div');
+        volumeHandle.className = 'volume-handle';
 
-        progressContainer.appendChild(progressBar);
-        progressContainer.appendChild(progressHandle);
+        volumeControl.appendChild(volumeBar);
+        volumeControl.appendChild(volumeHandle);
+        audioPlayer.appendChild(volumeControl);
 
         audioPlayer.appendChild(audio);
-        audioPlayer.appendChild(progressContainer);
-
         audioContainer.appendChild(button);
 
         audioContainer.appendChild(audioPlayer);
@@ -73,15 +87,66 @@ const createButtons = () => {
 
         iconContainer.addEventListener('click', () => {
             if(audio.paused){
-                audioArr.map(audioElem => audioElem.pause())
-                audio.play();
+                if(correct.icon.element && correct.icon.src) correct.icon.element.src = correct.icon.src;
+                correct.icon.element = icon;
+                correct.icon.src = icon.src;
                 icon.src = pause;
-            }
+                if (correct.audio) correct.audio.pause();
+                
+                audio.play();
+                correct.audio = audio;
+                background.style.backgroundImage = `url(${sound.bg})`;
+                background.style.backgroundSize = 'cover';
+                background.style.filter = 'blur(5px)';
+                }
+
             else{
                 audio.pause();
-                // icon.src = sounds
+                icon.src = sound.icon;
             }
+            
         })
+
+
+        //Громкость
+        const updateVolume = (percentage: number) => {
+        // Ограничиваем значения от 0 до 1
+        const clamped = Math.max(0, Math.min(1, percentage));
+        
+        // Обновляем громкость аудио
+        audio.volume = clamped;
+        currentVolume = clamped;
+        
+        const barWidth = `${clamped * 100}%`;
+        const handleLeft = `${clamped * 100}%`;
+        
+        volumeBar.style.width = barWidth;
+        volumeHandle.style.left = handleLeft;
+        };
+        updateVolume(currentVolume);
+        volumeControl.addEventListener('click', (e) => {
+            const rect = volumeControl.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percentage = clickX / rect.width;
+            updateVolume(percentage);
+        });
+        
+        // Обработка перетаскивания
+        let isDragging = false;
+        volumeHandle.addEventListener('mousedown', () => {
+            isDragging = true;
+        });
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            
+            const rect = volumeControl.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const percentage = clickX / rect.width;
+            updateVolume(percentage);
+        });
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
     })
 }
 
